@@ -21,7 +21,7 @@ to the `https://api.hit-profit.nl/oauth/authorize` that has the following parame
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
-- **response_type**: This should be `code`
+- **response_type**: This should be `code`.
 - **scope**: This should be `sso`.
 
 ```php
