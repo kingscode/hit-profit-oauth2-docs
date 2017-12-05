@@ -73,3 +73,35 @@ This will return a JSON response which contains the following attributes:
 - **access_token**: The OAuth2 access token. (used to identify the user)
 - **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
 - **expires_in**: The time in seconds when the token will expire.
+
+### Refreshing tokens
+It is possible to refresh the access_token via the `/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
+The request should include the following parameters:
+
+- **grant_type**: This should be `refresh_token`.
+- **refresh_token**: The refresh token of the user.
+- **client_id**: Your client id.
+- **client_secret**: Your client secret.
+- **scope**: This should be `sso`.
+
+```php
+$http = new GuzzleHttp\Client;
+
+$response = $http->post('http://your-app.com/oauth/token', [
+    'form_params' => [
+        'grant_type'    => 'refresh_token',
+        'refresh_token' => 'your_refresh_token',
+        'client_id'     => 'client-id',
+        'client_secret' => 'client-secret',
+        'scope'         => 'sso',
+    ],
+]);
+
+return json_decode((string) $response->getBody(), true);
+```
+
+This will return a JSON response which contains the following attributes:
+
+- **access_token**: The OAuth2 access token. (used to identify the user)
+- **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
+- **expires_in**: The time in seconds when the token will expire.
