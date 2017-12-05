@@ -1,5 +1,5 @@
 # HIT Profit OAuth2 Documentation
-This is the official documentation for the `hit-profit.nl` OAuth2 server.
+This is the official documentation for the `api.hit-profit.nl` OAuth2 server.
 > This documentation assumes you are already familiar with OAuth2. 
 > If you do not know anything about OAuth2, 
 > consider familiarizing yourself with the general terminology and features of OAuth2 before continuing.
@@ -17,24 +17,59 @@ In this mail you must specify a Redirect URI which will be the URI that the serv
 ### Requesting tokens
 #### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
-to the `https://hit-profit.nl/oauth/authorize` that has the following parameters:
+to the `https://api.hit-profit.nl/oauth/authorize` that has the following parameters:
 
-- **client_id**: _Your client id._
-- **redirect_uri**: _The redirect URI you have specified when requesting access to the OAuth2 server._
-- **response_type**: _This should be `code`_
-- **scope**: _This should be `sso`._
+- **client_id**: Your client id.
+- **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
+- **response_type**: This should be `code`
+- **scope**: This should be `sso`.
 
 ```php
 Route::get('/redirect', function () {
     $query = http_build_query([
         'client_id'     => 'client_id',
-        'redirect_uri'  => 'http://example.com/oauth/callback',
+        'redirect_uri'  => 'https://example.com/oauth/callback',
         'response_type' => 'code',
         'scope'         => 'sso',
     ]);
 
-    return redirect('https://hit-profit.nl/oauth/authorize?'.$query);
+    return redirect('https://api.hit-profit.nl/oauth/authorize?'.$query);
 });
 ```
 
-Which results in a redirect to: `https://hit-profit.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
+Which results in a redirect to: `https://api.hit-profit.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
+
+#### Converting authorization codes to access tokens
+If the user approves the authorization request, they will be redirected back to your application.
+You should then issue a `POST` request to the `api.hit-profit.nl` OAuth2 server to request an access token.
+The request should include the following parameters:
+
+- **grant_type**: This should be `authorization_code`.
+- **client_id**: Your client id.
+- **client_secret**: Your client secret.
+- **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
+- **code**: The code that is sent back to your application via a `GET` parameter.
+
+```php
+Route::get('/callback', function (Request $request) {
+    $http = new GuzzleHttp\Client;
+
+    $response = $http->post('https://api.hit-profit.nl/oauth/token', [
+        'form_params' => [
+            'grant_type'    => 'authorization_code',
+            'client_id'     => 'client_id',
+            'client_secret' => 'client_secret',
+            'redirect_uri'  => 'https://example.com/oauth/callback',
+            'code'          => $request->code,
+        ],
+    ]);
+
+    return json_decode((string) $response->getBody(), true);
+});
+```
+
+This will return a JSON response which contains the following attributes:
+
+- **access_token**: The OAuth2 access token. (used to identify the user)
+- **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
+- **expires_in**: The time in seconds when the token will expire.
