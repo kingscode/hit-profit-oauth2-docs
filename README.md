@@ -27,7 +27,7 @@ to the `https://api.hit-profit.nl/oauth/authorize` that has the following parame
 ```php
 Route::get('/redirect', function () {
     $query = http_build_query([
-        'client_id'     => 'client_id',
+        'client_id'     => 'client-id',
         'redirect_uri'  => 'https://example.com/oauth/callback',
         'response_type' => 'code',
         'scope'         => 'sso',
@@ -57,8 +57,8 @@ Route::get('/callback', function (Request $request) {
     $response = $http->post('https://api.hit-profit.nl/oauth/token', [
         'form_params' => [
             'grant_type'    => 'authorization_code',
-            'client_id'     => 'client_id',
-            'client_secret' => 'client_secret',
+            'client_id'     => 'client-id',
+            'client_secret' => 'client-secret',
             'redirect_uri'  => 'https://example.com/oauth/callback',
             'code'          => $request->code,
         ],
@@ -90,7 +90,7 @@ $http = new GuzzleHttp\Client;
 $response = $http->post('http://your-app.com/oauth/token', [
     'form_params' => [
         'grant_type'    => 'refresh_token',
-        'refresh_token' => 'your_refresh_token',
+        'refresh_token' => 'your-refresh-token',
         'client_id'     => 'client-id',
         'client_secret' => 'client-secret',
         'scope'         => 'sso',
