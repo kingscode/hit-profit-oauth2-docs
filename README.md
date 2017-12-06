@@ -51,7 +51,7 @@ The request should include the following parameters:
 - **code**: The code that is sent back to your application via a `GET` parameter.
 
 ```php
-Route::get('/callback', function (Request $request) {
+Route::get('/oauth/callback', function (Request $request) {
     $http = new GuzzleHttp\Client;
 
     $response = $http->post('https://api.hit-profit.nl/oauth/token', [
@@ -87,7 +87,7 @@ The request should include the following parameters:
 ```php
 $http = new GuzzleHttp\Client;
 
-$response = $http->post('http://your-app.com/oauth/token', [
+$response = $http->post('https://api.hit-profitnl/oauth/token', [
     'form_params' => [
         'grant_type'    => 'refresh_token',
         'refresh_token' => 'your-refresh-token',
