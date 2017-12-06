@@ -8,7 +8,7 @@ This is the official documentation for the `api.hit-my-administrator.nl` OAuth2 
 Given that the OAuth2 server is only accessible to trusted parties, access tokens must be requested in contrary to having an open service for anyone to use.
 
 To gain access to the HIT Profit OAuth2 server, send a mail to:
-> info@documentready.nl
+> info@kingscode.nl
 
 In this mail you must specify a Redirect URI which will be the URI that the server should redirect to after the user has authorized your application.
 > For example: https://example.com/oauth/callback
