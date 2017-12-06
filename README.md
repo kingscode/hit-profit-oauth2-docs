@@ -1,5 +1,5 @@
 # HIT Profit OAuth2 Documentation
-This is the official documentation for the `api.hit-my-administration.nl` OAuth2 server.
+This is the official documentation for the `https://api.hit-my-administration.nl` OAuth2 server.
 > This documentation assumes you are already familiar with OAuth2. 
 > If you do not know anything about OAuth2, 
 > consider familiarizing yourself with the general terminology and features of OAuth2 before continuing.
@@ -41,7 +41,7 @@ Which results in a redirect to: `https://api.hit-my-administration.nl/oauth/auth
 
 #### Converting authorization codes to access tokens
 If the user approves the authorization request, they will be redirected back to your application.
-You should then issue a `POST` request to the `api.hit-my-administration.nl/oauth/token` URI to request an access token.
+You should then issue a `POST` request to the `https://api.hit-my-administration.nl/oauth/token` URI to request an access token.
 The request should include the following parameters:
 
 - **grant_type**: This should be `authorization_code`.
