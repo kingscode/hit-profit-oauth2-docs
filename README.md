@@ -1,5 +1,5 @@
 # HIT Profit OAuth2 Documentation
-This is the official documentation for the `api.hit-profit.nl` OAuth2 server.
+This is the official documentation for the `api.hit-my-administrator.nl` OAuth2 server.
 > This documentation assumes you are already familiar with OAuth2. 
 > If you do not know anything about OAuth2, 
 > consider familiarizing yourself with the general terminology and features of OAuth2 before continuing.
@@ -17,7 +17,7 @@ In this mail you must specify a Redirect URI which will be the URI that the serv
 ### Requesting tokens
 #### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
-to the `https://api.hit-profit.nl/oauth/authorize` URI that has the following parameters:
+to the `https://api.hit-my-administrator.nl/oauth/authorize` URI that has the following parameters:
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
@@ -33,15 +33,15 @@ Route::get('/redirect', function () {
         'scope'         => 'sso',
     ]);
 
-    return redirect('https://api.hit-profit.nl/oauth/authorize?'.$query);
+    return redirect('https://api.hit-my-administrator.nl/oauth/authorize?'.$query);
 });
 ```
 
-Which results in a redirect to: `https://api.hit-profit.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
+Which results in a redirect to: `https://api.hit-my-administrator.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
 
 #### Converting authorization codes to access tokens
 If the user approves the authorization request, they will be redirected back to your application.
-You should then issue a `POST` request to the `api.hit-profit.nl/oauth/token` URI to request an access token.
+You should then issue a `POST` request to the `api.hit-my-administrator.nl/oauth/token` URI to request an access token.
 The request should include the following parameters:
 
 - **grant_type**: This should be `authorization_code`.
@@ -54,7 +54,7 @@ The request should include the following parameters:
 Route::get('/oauth/callback', function (Request $request) {
     $http = new GuzzleHttp\Client;
 
-    $response = $http->post('https://api.hit-profit.nl/oauth/token', [
+    $response = $http->post('https://api.hit-my-administrator.nl/oauth/token', [
         'form_params' => [
             'grant_type'    => 'authorization_code',
             'client_id'     => 'client-id',
@@ -87,7 +87,7 @@ The request should include the following parameters:
 ```php
 $http = new GuzzleHttp\Client;
 
-$response = $http->post('https://api.hit-profitnl/oauth/token', [
+$response = $http->post('https://api.hit-my-administrator.nl/oauth/token', [
     'form_params' => [
         'grant_type'    => 'refresh_token',
         'refresh_token' => 'your-refresh-token',
