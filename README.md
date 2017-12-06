@@ -17,7 +17,7 @@ In this mail you must specify a Redirect URI which will be the URI that the serv
 ### Requesting tokens
 #### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
-to the `https://api.hit-profit.nl/oauth/authorize` that has the following parameters:
+to the `https://api.hit-profit.nl/oauth/authorize` URI that has the following parameters:
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
@@ -41,7 +41,7 @@ Which results in a redirect to: `https://api.hit-profit.nl/oauth/authorize?clien
 
 #### Converting authorization codes to access tokens
 If the user approves the authorization request, they will be redirected back to your application.
-You should then issue a `POST` request to the `api.hit-profit.nl` OAuth2 server to request an access token.
+You should then issue a `POST` request to the `api.hit-profit.nl/oauth/token` URI to request an access token.
 The request should include the following parameters:
 
 - **grant_type**: This should be `authorization_code`.
