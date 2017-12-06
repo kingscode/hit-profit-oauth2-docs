@@ -13,6 +13,9 @@ To gain access to the HIT Profit OAuth2 server, send a mail to:
 In this mail you must specify a Redirect URI which will be the URI that the server should redirect to after the user has authorized your application.
 > For example: https://example.com/oauth/callback
 
+And the name of your application, this will be visible to the user.
+> For example: HIT My Administration
+
 ## Tutorial
 ### Requesting tokens
 #### Redirecting for authorization
