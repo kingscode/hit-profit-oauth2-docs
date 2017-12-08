@@ -28,7 +28,7 @@ to the `https://api.hit-my-administration.nl/oauth/authorize` URI that has the f
 - **scope**: This should be `sso`.
 
 ```php
-Route::get('/redirect', function () {
+Route::get('/oauth/redirect', function () {
     $query = http_build_query([
         'client_id'     => 'client-id',
         'redirect_uri'  => 'https://example.com/oauth/callback',
@@ -77,8 +77,32 @@ This will return a JSON response which contains the following attributes:
 - **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
 - **expires_in**: The time in seconds when the token will expire.
 
+### Implicit grant tokens
+The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. 
+This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. 
+
+For this you should make a request to `https://api.hit-my-administraion.nl/oauth/authorize` with the following parameters:
+
+- **client_id**: Your client id.
+- **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
+- **response_type**: This should be `token`.
+- **scope**: This should be `sso`.
+
+```php
+Route::get('/oauth/redirect', function () {
+    $query = http_build_query([
+        'client_id'     => 'client-id',
+        'redirect_uri'  => 'http://example.com/oauth/callback',
+        'response_type' => 'token',
+        'scope'         => 'sso',
+    ]);
+
+    return redirect('http://api.hit-my-administraion.nl/oauth/authorize?'.$query);
+});
+```
+
 ### Refreshing tokens
-It is possible to refresh the access_token via the `/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
+It is possible to refresh the `access_token` via the `https://api.hit-my-administration.nl/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
 The request should include the following parameters:
 
 - **grant_type**: This should be `refresh_token`.
