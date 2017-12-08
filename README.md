@@ -16,7 +16,7 @@ In this mail you must specify a Redirect URI which will be the URI that the serv
 And the name of your application, this will be visible to the user.
 > For example: HIT My Administration
 
-## Tutorial
+## Usage
 ### Requesting tokens
 #### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
