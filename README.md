@@ -81,7 +81,7 @@ This will return a JSON response which contains the following attributes:
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. 
 This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. 
 
-For this you should make a request to `https://api.hit-my-administraion.nl/oauth/authorize` with the following parameters:
+For this you should make a request to `https://api.hit-my-administration.nl/oauth/authorize` with the following parameters:
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
@@ -97,7 +97,7 @@ Route::get('/oauth/redirect', function () {
         'scope'         => 'sso',
     ]);
 
-    return redirect('http://api.hit-my-administraion.nl/oauth/authorize?'.$query);
+    return redirect('http://api.hit-my-administration.nl/oauth/authorize?'.$query);
 });
 ```
 
