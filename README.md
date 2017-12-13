@@ -16,9 +16,9 @@ In this mail you must specify a Redirect URI which will be the URI that the serv
 And the name of your application, this will be visible to the user.
 > For example: HIT My Administration
 
-## Usage
-### Requesting tokens
-#### Redirecting for authorization
+# Usage
+## Requesting tokens
+### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
 to the `https://api.hit-my-administration.nl/oauth/authorize` URI that has the following parameters:
 
@@ -42,7 +42,7 @@ Route::get('/oauth/redirect', function () {
 
 Which results in a redirect to: `https://api.hit-my-administration.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
 
-#### Converting authorization codes to access tokens
+### Converting authorization codes to access tokens
 If the user approves the authorization request, they will be redirected back to your application.
 You should then issue a `POST` request to the `https://api.hit-my-administration.nl/oauth/token` URI to request an access token.
 The request should include the following parameters:
@@ -77,7 +77,7 @@ This will return a JSON response which contains the following attributes:
 - **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
 - **expires_in**: The time in seconds when the token will expire.
 
-### Implicit grant tokens
+## Implicit grant tokens
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. 
 This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. 
 
@@ -101,7 +101,7 @@ Route::get('/oauth/redirect', function () {
 });
 ```
 
-### Refreshing tokens
+## Refreshing tokens
 It is possible to refresh the `access_token` via the `https://api.hit-my-administration.nl/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
 The request should include the following parameters:
 
@@ -132,3 +132,21 @@ This will return a JSON response which contains the following attributes:
 - **access_token**: The OAuth2 access token. (used to identify the user)
 - **refresh_token**: The OAuth2 refresh token. (used for refreshing the access token)
 - **expires_in**: The time in seconds when the token will expire.
+
+## Getting user data
+### Me
+After the whole OAuth2 dance has been completed, you can make a `GET` request to `https://api.hit-my-administration.nl/v1/me` which enables you to get some of the user's data.
+
+You should specify the access token as a `Bearer` token in the `Authorization` header of your request, like so:
+```text
+Authorization: Bearer access_token
+```
+
+But this also enables you to check if the token is still valid and thus if the user is still logged in, 
+you'll get a proper `401 Unauthorized` that includes a json response like this:
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
