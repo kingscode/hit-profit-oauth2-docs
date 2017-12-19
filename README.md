@@ -142,8 +142,7 @@ You should specify the access token as a `Bearer` token in the `Authorization` h
 Authorization: Bearer access_token
 ```
 
-But this also enables you to check if the token is still valid and thus if the user is still logged in, 
-you'll get a proper `401 Unauthorized` that includes a json response like this:
+But this also enables you to check if the token is still valid and thus if the user is still logged in, if that's the case you'll get a proper `401 Unauthorized` that includes a json response like this:
 
 ```json
 {
