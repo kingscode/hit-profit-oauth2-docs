@@ -1,5 +1,5 @@
 # HIT Profit OAuth2 Documentation
-This is the official documentation for the `https://api.hit-my-administration.nl` OAuth2 server.
+This is the official documentation for the `https://api.hit.documentready.nl` OAuth2 server.
 > This documentation assumes you are already familiar with OAuth2. 
 > If you do not know anything about OAuth2, 
 > consider familiarizing yourself with the general terminology and features of OAuth2 before continuing.
@@ -20,7 +20,7 @@ And the name of your application, this will be visible to the user.
 ## Requesting tokens
 ### Redirecting for authorization
 Once you have requested access and received your `client_id` and `client_secret` you may start by making a redirect request
-to the `https://api.hit-my-administration.nl/oauth/authorize` URI that has the following parameters:
+to the `https://api.hit.documentready.nl/oauth/authorize` URI that has the following parameters:
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
@@ -36,15 +36,15 @@ Route::get('/oauth/redirect', function () {
         'scope'         => 'sso',
     ]);
 
-    return redirect('https://api.hit-my-administration.nl/oauth/authorize?'.$query);
+    return redirect('https://api.hit.documentready.nl/oauth/authorize?'.$query);
 });
 ```
 
-Which results in a redirect to: `https://api.hit-my-administration.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
+Which results in a redirect to: `https://api.hit.documentready.nl/oauth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Fexample.com%2Foauth%2Fcallback&response_type=code&scope=sso`
 
 ### Converting authorization codes to access tokens
 If the user approves the authorization request, they will be redirected back to your application.
-You should then issue a `POST` request to the `https://api.hit-my-administration.nl/oauth/token` URI to request an access token.
+You should then issue a `POST` request to the `https://api.hit.documentready.nl/oauth/token` URI to request an access token.
 The request should include the following parameters:
 
 - **grant_type**: This should be `authorization_code`.
@@ -57,7 +57,7 @@ The request should include the following parameters:
 Route::get('/oauth/callback', function (Request $request) {
     $http = new GuzzleHttp\Client;
 
-    $response = $http->post('https://api.hit-my-administration.nl/oauth/token', [
+    $response = $http->post('https://api.hit.documentready.nl/oauth/token', [
         'form_params' => [
             'grant_type'    => 'authorization_code',
             'client_id'     => 'client-id',
@@ -81,7 +81,7 @@ This will return a JSON response which contains the following attributes:
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. 
 This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. 
 
-For this you should make a request to `https://api.hit-my-administration.nl/oauth/authorize` with the following parameters:
+For this you should make a request to `https://api.hit.documentready.nl/oauth/authorize` with the following parameters:
 
 - **client_id**: Your client id.
 - **redirect_uri**: The redirect URI you have specified when requesting access to the OAuth2 server.
@@ -97,12 +97,12 @@ Route::get('/oauth/redirect', function () {
         'scope'         => 'sso',
     ]);
 
-    return redirect('http://api.hit-my-administration.nl/oauth/authorize?'.$query);
+    return redirect('http://api.hit.documentready.nl/oauth/authorize?'.$query);
 });
 ```
 
 ## Refreshing tokens
-It is possible to refresh the `access_token` via the `https://api.hit-my-administration.nl/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
+It is possible to refresh the `access_token` via the `https://api.hit.documentready.nl/oauth/token` uri by using the `refresh_token` that was issued when authorizing.
 The request should include the following parameters:
 
 - **grant_type**: This should be `refresh_token`.
@@ -114,7 +114,7 @@ The request should include the following parameters:
 ```php
 $http = new GuzzleHttp\Client;
 
-$response = $http->post('https://api.hit-my-administration.nl/oauth/token', [
+$response = $http->post('https://api.hit.documentready.nl/oauth/token', [
     'form_params' => [
         'grant_type'    => 'refresh_token',
         'refresh_token' => 'your-refresh-token',
@@ -135,17 +135,22 @@ This will return a JSON response which contains the following attributes:
 
 ## Getting user data
 ### Me
-After the whole OAuth2 dance has been completed, you can make a `GET` request to `https://api.hit-my-administration.nl/v1/me` which enables you to get some of the user's data.
+After the whole OAuth2 dance has been completed, you can make a `GET` request to `https://api.hit.documentready.nl/v1/me` which enables you to get some of the user's data.
 
 You should specify the access token as a `Bearer` token in the `Authorization` header of your request, like so:
 ```text
 Authorization: Bearer access_token
 ```
 
-But this also enables you to check if the token is still valid and thus if the user is still logged in, if that's the case you'll get a proper `401 Unauthorized` that includes a json response like this:
+But this also enables you to check if the token is still valid and thus if the user is still logged in, if that's not the case you'll get a proper `401 Unauthorized` that includes a json response like this:
 
 ```json
 {
     "message": "Unauthenticated."
 }
 ```
+
+## Revoking tokens
+It is possible to revoke the granted access token, for example, if the user wants to logout and revoke access to their account.
+
+For this you can make a `DELETE` (or a `POST` with a parameter `_method=DELETE`) request to `https://api.hit.documentready.nl/oauth/token`. (keep in mind that you need to have the `Authorization` header set to the correct value).
